@@ -104,40 +104,21 @@ const menu = [
 ];
 
 ipcMain.on("init:tunnel", (e, options) => {
-  // options.dest = path.join(os.homedir(), "imageshrink");
-  // shrinkImage(options);
-  console.log(options);
+  const { fork } = require("child_process");
 
-  var tunnel = require("tunnel-ssh");
-  //map port from remote 3306 to localhost 3306
+  forked = fork("child.js");
 
-  var config = {
-    username: "root",
-    password: "THEPASSWORDYOUCREATED",
-    host: "3.82.103.221",
-    port: 22,
-    dstHost: "10.192.21.203",
-    dstPort: 3389,
-    localHost: "localhost",
-    localPort: 3389,
-  };
-
-  var server = tunnel(config, function (error, server) {
-    if (error) {
-      //catch configuration and startup errors here.
-    }
+  forked.on("message", (options) => {
+    console.log("Message from child", msg);
   });
 
-  // Use a listener to handle errors outside the callback
-  server.on("error", function (err) {
-    console.error("Error Log:", err);
-  });
+  forked.send({ hello: "world" });
 });
 
-ipcMain.on("close:tunnel", (e, options, server) => {
+ipcMain.on("close:tunnel", (e, options) => {
   // options.dest = path.join(os.homedir(), "imageshrink");
   // shrinkImage(options);
-  server.close();
+  forked.kill();
   //map port from remote 3306 to localhost 3306
 });
 
