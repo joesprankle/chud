@@ -73,23 +73,14 @@
       function openTunnel(rowId) {
         alert(rowId);
         ipcRenderer.send("init:tunnel", {
-          imgPath: rowId,
+          row: rowId,
         });
       }
       function closeTunnel(rowId) {
-        alert(rowId);
-      }
-
-      document
-        .getElementById("theBtn2")
-        .addEventListener("click", function (event) {
-          // do something
-
-          ipcRenderer.send("close:tunnel", {
-            imgPath: "xxxx",
-            quality: "yyyy",
-          });
+        ipcRenderer.send("close:tunnel", {
+          row: rowId,
         });
+      }
 
       //   On done
       ipcRenderer.on("image:done", () => {

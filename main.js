@@ -105,20 +105,15 @@ const menu = [
 
 ipcMain.on("init:tunnel", (e, options) => {
   const { fork } = require("child_process");
-
-  forked = fork("child.js");
-
-  forked.on("message", (options) => {
-    console.log("Message from child", msg);
-  });
-
-  forked.send({ hello: "world" });
+  console.log(options.row);
+  eval(options.row + ' = fork("child.js")');
 });
 
 ipcMain.on("close:tunnel", (e, options) => {
   // options.dest = path.join(os.homedir(), "imageshrink");
   // shrinkImage(options);
-  forked.kill();
+  eval(options.row + ".kill()");
+  //forked.kill();
   //map port from remote 3306 to localhost 3306
 });
 
