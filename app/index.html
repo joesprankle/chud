@@ -18,13 +18,19 @@
       <p>Push button to initiate tunnel</p>
 
       <div class="file-field input-field">
-        <div class="btn" id="theBtn">
+        <div class="btn" id="theBtn" onclick="openTunnel('rowId2')">
           <span>Connect</span>
         </div>
       </div>
       <br />
       <div class="file-field input-field">
-        <div class="btn" id="theBtn2" style="background-color: red;">
+        <!-- So the bottons will be dynamic, ids in the function would come during load -->
+        <div
+          class="btn"
+          id="theBtn2"
+          style="background-color: red;"
+          onclick="closeTunnel('rowId2')"
+        >
           <span>DisConnect</span>
         </div>
       </div>
@@ -64,27 +70,17 @@
       //     quality,
       //   });
       // });
-      document
-        .getElementById("theBtn")
-        .addEventListener("click", function (event) {
-          // do something
-
-          ipcRenderer.send("init:tunnel", {
-            imgPath: "xxxx",
-            quality: "yyyy",
-          });
+      function openTunnel(rowId) {
+        alert(rowId);
+        ipcRenderer.send("init:tunnel", {
+          row: rowId,
         });
-
-      document
-        .getElementById("theBtn2")
-        .addEventListener("click", function (event) {
-          // do something
-
-          ipcRenderer.send("close:tunnel", {
-            imgPath: "xxxx",
-            quality: "yyyy",
-          });
+      }
+      function closeTunnel(rowId) {
+        ipcRenderer.send("close:tunnel", {
+          row: rowId,
         });
+      }
 
       //   On done
       ipcRenderer.on("image:done", () => {
